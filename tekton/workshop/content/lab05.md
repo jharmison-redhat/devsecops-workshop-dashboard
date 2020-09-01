@@ -155,8 +155,7 @@ As we saw so far, all parts of Tekton can be created and used through YAML. That
 
  When creating a resource with YAML, the YAML can be supplied directly in the Web Console, via the CLI, from an automation tool that knows how to work with the Kubernetes API like Ansible, or from another Kubernetes-native tool like ArgoCD.
 
-
- In order to create a resource in the Console UI, while you're in the project where the resource needs to be created, click the `+` button in the upper right corner, and paste the YAML for the resource.  
+ In order to create a resource in the Console UI, while you're in the project where the resource needs to be created, click the `+` button in the upper right corner, and paste the YAML for the resource.
  ![Console Paste YAML](images/console_paste_yaml.png)
 
 ## OpenShift Console Web UI

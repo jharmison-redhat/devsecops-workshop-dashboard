@@ -1,15 +1,14 @@
-# Introduction  
+# Introduction
 
 In this lab, we will add the `Unit Test` stage of the DevSecOps pipeline
 
 ![Unit Test Stage](images/openshift-pipeline-unittest.png)
 
-# Add New Task to the Pipeline 
+## Add New Task to the Pipeline
 
 Since the tests in a maven project are run directly by Maven, all we need is to add a new task to our pipeline that will call the `test` goal. We can reuse our existing `simple-maven` task and pass a parameter for the `GOAL` param in the task.
 
 The only thing that is different about the `test-app` task in the pipeline is that we are using the `runAfter` attribute so that the `test-app` task runs in *after* `build-app` instead of in parallel (this will come in handy very shortly).  > **NOTE** : since we're updating the existing pipeline YAML, pay attention to the indentation of the tasks - the new `test-app` step needs to be at the same indentation level as the `build-app` step.
-
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
@@ -26,14 +25,14 @@ spec:
 
   tasks:
     - name: build-app
-      # ... snipped for brevity ... 
+      # ... snipped for brevity ...
     - name: test-app
       taskRef:
         kind: Task
         name: simple-maven
       params:
           - name: GOALS
-            value: test 
+            value: test
           - name: SETTINGS_PATH
             value: configuration/cicd-settings-nexus3.xml
           - name: POM_PATH
@@ -50,22 +49,23 @@ spec:
 
 ```
 
-# Run the Pipeline
-OK - so, the pipeline is a little verbose, but beyond a few of the repeated configuration parameters (e.g. like SETTINGS_PATH, resources, etc), we're just leaning the hard work that we did in the previous lab. 
+## Run the Pipeline
+
+OK - so, the pipeline is a little verbose, but beyond a few of the repeated configuration parameters (e.g. like SETTINGS_PATH, resources, etc), we're just leaning on the hard work that we did in the previous lab.
+
 ```execute
 tkn pipeline start --resource pipeline-source=tasks-source-code --workspace name=local-maven-repo,claimName=maven-repo-pvc tasks-dev-pipeline --showlog
 
 ```
 
-
-Alternatively, since we're not passing any new parameters to the pipeline, we can just re-run the previous pipeline run. 
+Alternatively, since we're not passing any new parameters to the pipeline, we can just re-run the previous pipeline run.
 
 ![Rerun Pipeline Run](images/rerun_pipelinerun.png)
 
-In the Pipeline Run details screen, we can now see the two tasks in the pipeline executing one after another. 
+In the Pipeline Run details screen, we can now see the two tasks in the pipeline executing one after another.
 
 ![PipelineRun Details](images/pipelinerun_results_after_test.png)
 
-# Conclusion
+## Conclusion
 
 In this stage we just ended up reusing our work in building a reusable task and we were able to very quickly add a new Task in the pipeline
